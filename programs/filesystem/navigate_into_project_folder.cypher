@@ -1,0 +1,18 @@
+CREATE
+(start:Control {name:"Start"}),
+(ask_where:Action {name:"Ask where to save the work", tool:"AskUser", params:"Ask in {language} the path to the folder to save the work.\nQuestion:"}),
+(try_make_folder:Action {name:"Try to create the project folder", tool:"VirtualShell", params:"The mkdir command to create the folder to save the work\nCommand:"}),
+(is_folder_already_present:Decision {name: "Is the folder already present?", purpose:"Check if the folder is already present"}),
+(ask_confirmation:Action {name:"Ask confirmation to work on an already present folder", params:"Ask in {language} to confirm the right to work on an already present folder\nQuestion:"}),
+(is_confirmed:Decision {name:"Is the right to work on that folder confirmed?", purpose:"Check if it is possible to work in this folder"}),
+(navigate_into_folder:Action {name:"Navigate into the project folder", tool:"VirtualShell", params:"The cd command to navigate into the folder where to save the work\nCommand:"}),
+(end:Control {name:"End"}),
+(start)-[:NEXT]->(ask_where),
+(ask_where)-[:NEXT]->(try_make_folder),
+(try_make_folder)-[:NEXT]->(is_folder_already_present),
+(is_folder_already_present)-[:YES]->(ask_confirmation),
+(is_folder_already_present)-[:NO]->(navigate_into_folder),
+(ask_confirmation)-[:NEXT]->(is_confirmed),
+(is_confirmed)-[:YES]->(navigate_into_folder),
+(is_confirmed)-[:NO]->(ask_where),
+(navigate_into_folder)-[:NEXT]->(end)
