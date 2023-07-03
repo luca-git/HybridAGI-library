@@ -1,8 +1,16 @@
 CREATE
 (start:Control {name:"Start"}),
+(choose_program:Decision {name:"Please choose the most relevant program to answer the objective.", purpose:"Choose the best program to run. Let's think this out in a step by step way to be sure we have the right answer."}),
 (clarify_objective:Program {name:"program:clarify_objective"}),
+(self_upgrade:Program {name:"program:self_upgrade"}),
 (chain_of_thought:Program {name:"program:chain_of_thought"}),
+(direct_prompting:Program {name:"program:direct_prompting"}),
 (end:Control {name:"End"}),
 (start)-[:NEXT]->(clarify_objective),
-(clarify_objective)-[:NEXT]->(chain_of_thought),
-(chain_of_thought)-[:NEXT]->(end)
+(clarify_objective)-[:NEXT]->(choose_program),
+(choose_program)-[:SELF_UPGRADE]->(self_upgrade),
+(choose_program)-[:DIFFICULT_QUESTION]->(chain_of_thought),
+(choose_program)-[:SIMPLE_QUESTION]->(direct_prompting),
+(self_upgrade)-[:NEXT]->(end),
+(chain_of_thought)-[:NEXT]->(end),
+(direct_prompting)-[:NEXT]->(end)

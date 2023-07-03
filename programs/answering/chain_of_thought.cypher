@@ -6,5 +6,4 @@ CREATE
 (start)-[:NEXT]->(answer),
 (answer)-[:NEXT]->(is_the_answer_right),
 (is_the_answer_right)-[:NO]->(answer),
-(is_the_answer_right)-[:YES]->(end),
-(answer)-[:NEXT]->(end)
+(is_the_answer_right)-[:YES]->(end)

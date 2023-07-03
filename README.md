@@ -12,7 +12,7 @@ The HybridAGI Library primarily consists of a wide range of `.cypher` files, eac
 
 ## Getting Started
 
-To start utilizing the HybridAGI Library, simply clone or download this repository to your local machine. You can then browse through the different sections and explore the available `.cypher` files. Feel free to modify, combine, and customize these files to suit your specific requirements and objectives.
+To start utilizing the HybridAGI Library, simply clone or download this repository to your local machine, if you installed HybridAGI successfully, the library should be installed. You can then browse through the different sections and explore the available `.cypher` files. Feel free to modify, combine, and customize these files to suit your specific requirements and objectives. To learn how to program HybridAGI please [follow this tutorial](programs/INSTRUCTIONS.md)
 
 ## Contribution Guidelines
 
