@@ -26,10 +26,11 @@ To design and understand Hybrid AGI graph programs, let's explore the schema use
   - tool: The tool to use for executing the action.
   - params: The prompt used to infer the parameters of the tool.
 - Decision:
-  - name: The question to ask or the decision to be made.
-  - purpose: The purpose of the decision.
+  - name: The purpose of the decision.
+  - question: The question to ask or the decision to be made.
 - Program:
-  - name: The index of the program within the graph memory.
+  - name: The purpose of the sub-program.
+  - program: The index of the program within the graph memory.
 
 #### Relationship types:
 
@@ -42,15 +43,15 @@ Decisions play a crucial role in Hybrid AGI graph programs by facilitating choic
 
 ### Actions in Graph Programs
 
-Actions in Hybrid AGI graph programs involve the use of tools by the agent. The choice of the tool and its purpose is defined within the program itself, while the parameters of the tool are inferred from the prompt. By incorporating various actions, Hybrid AGI gains the capability to interact with external systems and perform specific tasks.
+Actions in Hybrid AGI graph programs involve the use of [Langchain tools](https://python.langchain.com/docs/modules/agents/tools/) by the agent. The choice of the tool and its purpose is defined within the program itself, while the parameters of the tool are inferred from the prompt. By incorporating various actions, Hybrid AGI gains the capability to interact with external systems and perform specific tasks. Discover [HybridAGI's tools](TOOLS.md) and learn more on how to use them in this context.
 
 ### Understanding Limitations
 
 While Hybrid AGI graph programs offer powerful capabilities, it's important to consider their limitations. One such limitation arises from the maximum size constraint of the prompt, which impacts the working memory of the system. Handling complex tasks efficiently requires the ability to save and retrieve information effectively.
 
-### Your First Graph Program
+### Your First Graph Programs
 
-To get started with Hybrid AGI graph programming, let's dive into your first program! Below is a minimal example that demonstrates the backbone of a graph program:
+To get started with Hybrid AGI graph base prompt programming, let's dive into your first program! Below is a minimal example that demonstrates the backbone of a graph program:
 
 ```do_nothing.cypher
 CREATE
@@ -77,8 +78,8 @@ To further enhance the program, we can incorporate decision-making:
 ```clarify_objective.cypher
 CREATE
 (start:Control {name: "Start"}),
-(ask_question:Action {name: "Ask question to clarify the objective", tool: "AskUser", params: "Pick one question to clarify the objective and ask it in {language}\nQuestion:"}),
-(is_anything_unclear:Decision {name: "Is there anything unclear in the objective?", purpose: "Find out if there is anything unclear in the objective."}),
+(ask_question:Action {name:"Ask question to clarify the objective", tool:"AskUser", params:"Pick one question to clarify the objective and ask it in {language}\nQuestion:"}),
+(is_anything_unclear:Decision {name:"Find out if there is anything unclear in the objective", question:"Is there anything unclear in the objective?"}),
 (end:Control {name: "End"}),
 (start)-[:NEXT]->(ask_question),
 (ask_question)-[:NEXT]->(is_anything_unclear),
@@ -88,15 +89,15 @@ CREATE
 
 In this program, we introduce a decision point to clarify the objective. If there is something unclear, the AGI will ask the user for clarification repeatedly until the objective is clear. Once the objective is clear, the program will proceed to the end.
 
-To make the decision-making process more robust and consider uncertainty, we can use prompting techniques like "Let's think in a step-by-step way" or expand the options for decision outcomes:
+To make the decision-making process more robust and consider uncertainty, we can expand the options for decision outcomes:
 
 ```clarify_objective.cypher
 CREATE
-(start:Control {name: "Start"}),
-(ask_question:Action {name: "Ask question to clarify the objective", tool: "AskUser", params: "Pick one question to clarify the objective and ask it in {language}\nQuestion:"}),
-(is_anything_unclear:Decision {name: "Is there anything unclear in the objective?", purpose: "Find out if there is anything unclear in the objective. Let's think this out in a step-by-step way to be sure we have the right answer."}),
-(clarify:Action {name: "Clarify the given objective", tool: "Predict", params: "The clarified objective.\Objective:"}),
-(end:Control {name: "End"}),
+(start:Control {name:"Start"}),
+(ask_question:Action {name:"Ask question to clarify the Objective", tool:"AskUser", params:"Pick one question to clarify the Objective and ask it in {language}\nQuestion:"}),
+(is_anything_unclear:Decision {name:"Find out if there is anything unclear in the Objective", question:"Is there still anything unclear in the Objective? Let's think this out in a step by step way to be sure we have the right answer"}),
+(clarify:Action {name:"Clarify the given objective", tool:"Predict", params:"The refined Objective considering all AskUser Observations.\nObjective:"}),
+(end:Control {name:"End"}),
 (start)-[:NEXT]->(ask_question),
 (ask_question)-[:NEXT]->(is_anything_unclear),
 (is_anything_unclear)-[:MAYBE]->(ask_question),
@@ -105,19 +106,20 @@ CREATE
 (clarify)-[:NEXT]->(end)
 ```
 
-In this enhanced program, we incorporate the "step-by-step" thinking approach to ensure a clear objective. The decision node allows for a MAYBE option in addition to YES and NO, providing more flexibility in handling uncertainty. The clarified objective is then obtained through the "Predict" tool.
+In this enhanced program, we incorporate the "step-by-step" thinking approach to ensure a clear objective. The decision node allows for a MAYBE option in addition to YES and NO, providing more flexibility in handling uncertainty. The refined objective is then obtained through the "Predict" tool.
 
-To utilize this behavior within other programs, we can create sub-programs:
+Here is the visual representation of this program:
+![The visual representation of the program](../img/clarify_objective.png)
+
+To use this behavior within other programs, we can create sub-programs:
 
 ```main.cypher
 CREATE
 (start:Control {name: "Start"}),
-(clarify_objective:Program {name: "program:clarify_objective"}),
+(clarify_objective:Program {name:"Clarify the objective given by the User", program:"program:clarify_objective"}),
 (end:Control {name: "End"}),
 (start)-[:NEXT]->(clarify_objective),
 (clarify_objective)-[:NEXT]->(end)
 ```
 
-In this example, the main program incorporates the sub-program "clarify_objective." This modularity allows for the reuse and composition of different program components to achieve more complex behaviors.
-
-Now that you have a solid understanding of Hybrid AGI graph programs, you're ready to dive deeper and unleash the power of graph-oriented prompt programming!
+In this example, the main program incorporates the sub-program "clarify_objective" This modularity allows for the reuse and composition of different program components to achieve more complex behaviors.

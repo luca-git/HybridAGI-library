@@ -1,7 +1,7 @@
 CREATE
 (start:Control {name:"Start"}),
-(answer:Action {name:"Answer the given objective", tool:"Predict", params:"Answer the given objective without additionnal information. Let's think this out in a step by step way to be sure we have the right answer.\nAnswer:"}),
-(is_the_answer_right:Decision {name:"Is the answer right?", purpose:"Check if the Answer is correct considering the given objective. Let's think this out in a step by step way to be sure we have the right answer."}),
+(answer:Action {name:"Answer the given Objective", tool:"Predict", params:"Please only Answer the Objective. Let's think this out in a step by step way to be sure we have the right answer. Remove any additionnal information.\nAnswer:"}),
+(is_the_answer_right:Decision {name:"Check if the Answer is correct", question:"Is the answer correct?"}),
 (end:Control {name:"End"}),
 (start)-[:NEXT]->(answer),
 (answer)-[:NEXT]->(is_the_answer_right),

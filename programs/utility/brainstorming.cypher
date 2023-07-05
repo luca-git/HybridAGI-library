@@ -1,0 +1,15 @@
+CREATE
+(start:Control {name:"Start"}),
+(brainstorm_ideas:Action {name:"Brainstorm ideas", tool:"Predict", params:"Please give me a short bulleted list of outstanding new ideas. Let's think this out in a step by step way to be sure we have the right answer.\nIdeas:"}),
+(ask_confirmation:Action {name:"Ask User confirmation", tool:"AskUser", params:"Please ask in {language} if the most promising idea is correct and relevant, include the idea.\nQuestion:"}),
+(ask_idea:Action {name:"Ask User ideas for refinement", tool:"AskUser", params:"Please ask in {language} the ideas to focus on.\nQuestion:"}),
+(is_confirmed:Decision {name:"Check for User confirmation", question:"Does the User confirmed the idea?"}),
+(confirm_idea:Action {name:"Confirm idea", tool:"Predict", params:"Please give me the confirmed idea as refined objective.\nObjective:"}),
+(end:Control {name:"End"}),
+(start)-[:NEXT]->(brainstorm_ideas),
+(brainstorm_ideas)-[:NEXT]->(ask_confirmation),
+(ask_confirmation)-[:NEXT]->(is_confirmed),
+(is_confirmed)-[:YES]->(confirm_idea),
+(is_confirmed)-[:NO]->(ask_idea),
+(ask_idea)-[:NEXT]->(brainstorm_ideas),
+(confirm_idea)-[:NEXT]->(end)

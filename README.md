@@ -8,7 +8,7 @@ HybridAGI represents the fusion of advanced Artificial General Intelligence (AGI
 
 ## Repository Contents
 
-The HybridAGI Library primarily consists of a wide range of `.cypher` files, each representing a unique cognitive program or a component of a larger HybridAGI system. These files are carefully designed to empower your AGI system with the ability to follow logical paths, make decisions, and execute actions using external tools.
+The HybridAGI Library primarily consists of a wide range of `.cypher` files and the [instructions to create new ones](programs/INSTRUCTIONS.md), each file representing a unique cognitive program or a component of a larger HybridAGI system. These files are carefully designed to empower your AGI system with the ability to follow logical paths, make decisions, and execute actions using external tools.
 
 ## Getting Started
 
