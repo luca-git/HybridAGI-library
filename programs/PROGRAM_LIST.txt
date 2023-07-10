@@ -1,5 +1,0 @@
-clarify_objective: Clarify the objective provided by the user.
-navigate_into_project_folder: Navigate to the project folder.
-direct_prompting: Predict the answer in a single step.
-chain_of_thought: Provide iterative responses until the correct answer is reached.
-self_upgrade: Upgrade yourself by programming a behavior using the Graph-Of-Prompt technique.
