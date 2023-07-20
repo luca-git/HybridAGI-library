@@ -8,9 +8,9 @@ CREATE
 (upload_software:Action {name:"Upload the software to the User", tool:"Upload", params:"The path of the current directory, you can use ."}),
 (end:Control {name:"End"}),
 (start)-[:NEXT]->(navigate_into_project_folder),
-(navigate_into_project_folder)-[:NEXT]->(coding_philosophy),
-(coding_philosophy)-[:NEXT]->(write_spec),
-(write_spec)-[:NEXT]->(write_unittest),
+(navigate_into_project_folder)-[:NEXT]->(write_spec),
+(write_spec)-[:NEXT]->(coding_philosophy),
+(coding_philosophy)-[:NEXT]->(write_unittest),
 (write_unittest)-[:NEXT]->(write_code),
 (write_code)-[:NEXT]->(upload_software),
 (upload_software)-[:NEXT]->(end)
